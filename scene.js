@@ -74,6 +74,24 @@
     buttons: [[514, 602], [587, 602]]
   };
 
+  // The preserved outdoor artwork is seen through the new recessed sash.
+  // Remap its native lamp/reflection coordinates into the glass apertures.
+  function windowPoint(x, y) {
+    const left = x < 49;
+    const sx = left ? 0 : 49, sw = left ? 34 : 173;
+    const u = (x - sx) / sw, v = (y - 104) / 297;
+    const x1 = left ? 0 : 59, x2 = left ? 33 : 169;
+    const t1 = left ? 74 : 99, t2 = left ? 84 : 129;
+    const b1 = left ? 469 : 453, b2 = left ? 458 : 442;
+    return [Math.round(x1 + u * (x2 - x1)), Math.round((t1 + u * (t2 - t1)) * (1 - v) + (b1 + u * (b2 - b1)) * v)];
+  }
+  SCENE.bridge = SCENE.bridge.map(([x,y]) => windowPoint(x,y));
+  SCENE.shoreLights = SCENE.shoreLights.map(([x,y]) => windowPoint(x,y));
+  SCENE.waterReflections = SCENE.waterReflections.map(([x,y,width,height]) => {
+    const a=windowPoint(x,y), b=windowPoint(x+width,y+height);
+    return [a[0], a[1], Math.max(2,b[0]-a[0]), Math.max(2,b[1]-a[1])];
+  });
+
   const root = document.querySelector('.arcade');
   if (!root) return;
   const canvas = root.querySelector('.scene-animation');
@@ -247,29 +265,26 @@
       bulb(x, y, on, '115,246,178', 4, 10);
     });
 
-    const headChase = still ? 6 : Math.floor(seconds * 4.1);
     SCENE.marquee.forEach(([x, y], index) => {
-      const group = ((index - headChase) % 7 + 7) % 7;
-      const on = group < 2 ? .86 : group === 2 ? .3 : .05;
+      // Cabinet trim changes gently in three groups; there is no fast chase.
+      const group = index % 3;
+      const on = still ? .34 : .34 + Math.sin(seconds * TAU / 14 + group * TAU / 3) * .065;
       const color = index % 3 === 0 ? '255,187,70' : '80,215,242';
-      bulb(x, y, on, color, 4, 9);
+      bulb(x, y, on, color, 4, 7);
     });
 
     drawNativeAttract(seconds, still);
     drawFlippers(seconds, still);
     drawPinball(seconds, still);
 
-    SCENE.buttons.forEach(([x, y], index) => {
-      const phase = still ? .5 : (seconds + index * 1.8) % 4.1;
-      const on = phase < 1.15 || (phase > 1.46 && phase < 1.73);
-      context.fillStyle = on ? 'rgba(251,75,43,.8)' : 'rgba(89,27,35,.78)';
+    SCENE.buttons.forEach(([x, y]) => {
+      // Coin returns are continuously illuminated, like the real hardware.
+      context.fillStyle = 'rgba(251,75,43,.65)';
       context.fillRect(pixel(x - 5), pixel(y - 8), 10, 16);
-      if (on) {
-        bloom(x, y, 15, '255,75,39', .2);
-        context.fillStyle = '#ffe8aa';
-        context.fillRect(pixel(x - 2), pixel(y - 5), 2, 4);
-        context.fillRect(pixel(x - 2), pixel(y + 3), 2, 2);
-      }
+      bloom(x, y, 12, '255,75,39', .1);
+      context.fillStyle = '#ffe8aa';
+      context.fillRect(pixel(x - 2), pixel(y - 5), 2, 4);
+      context.fillRect(pixel(x - 2), pixel(y + 3), 2, 2);
     });
   }
 
@@ -288,18 +303,10 @@
       if (on > 1) bloom(x, y, radius + 5, '255,174,39', .17);
     });
 
-    const letterLead = Math.floor(seconds * 3.4) % nativeTiles.letters.length;
-    const marqueeBeat = seconds % 7.2;
-    nativeTiles.letters.forEach((tile, index) => {
-      let on = .85;
-      if (!still) {
-        const distance = (index - letterLead + 7) % 7;
-        on = distance === 0 ? 1.3 : distance === 1 ? 1.06 : .6;
-        if (marqueeBeat > 5.9 && marqueeBeat < 6.12) on = 1.3;
-        if (marqueeBeat > 6.23 && marqueeBeat < 6.38) on = .44;
-      }
-      nativeLight(tile, on);
-    });
+    // The whole name stays warm-lit together. This tiny ten-second variation
+    // avoids individual letter flashes and keeps the sign easy to read.
+    const nameGlow = still ? .96 : .96 + Math.sin(seconds * TAU / 10) * .015;
+    nativeTiles.letters.forEach(tile => nativeLight(tile, nameGlow));
     // The birthday stays readable throughout the soft scoreboard breathing.
     const scoreGlow = still ? 1 : .93 + .23 * (.5 + .5 * Math.sin(seconds * 1.45));
     nativeLight(nativeTiles.score, scoreGlow);
