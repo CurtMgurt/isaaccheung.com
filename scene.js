@@ -74,24 +74,6 @@
     buttons: [[514, 602], [587, 602]]
   };
 
-  // The preserved outdoor artwork is seen through the new recessed sash.
-  // Remap its native lamp/reflection coordinates into the glass apertures.
-  function windowPoint(x, y) {
-    const left = x < 49;
-    const sx = left ? 0 : 49, sw = left ? 34 : 173;
-    const u = (x - sx) / sw, v = (y - 104) / 297;
-    const x1 = left ? 0 : 59, x2 = left ? 33 : 169;
-    const t1 = left ? 74 : 99, t2 = left ? 84 : 129;
-    const b1 = left ? 469 : 453, b2 = left ? 458 : 442;
-    return [Math.round(x1 + u * (x2 - x1)), Math.round((t1 + u * (t2 - t1)) * (1 - v) + (b1 + u * (b2 - b1)) * v)];
-  }
-  SCENE.bridge = SCENE.bridge.map(([x,y]) => windowPoint(x,y));
-  SCENE.shoreLights = SCENE.shoreLights.map(([x,y]) => windowPoint(x,y));
-  SCENE.waterReflections = SCENE.waterReflections.map(([x,y,width,height]) => {
-    const a=windowPoint(x,y), b=windowPoint(x+width,y+height);
-    return [a[0], a[1], Math.max(2,b[0]-a[0]), Math.max(2,b[1]-a[1])];
-  });
-
   const root = document.querySelector('.arcade');
   if (!root) return;
   const canvas = root.querySelector('.scene-animation');

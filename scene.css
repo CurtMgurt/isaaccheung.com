@@ -11,8 +11,6 @@ body { min-height: 100svh; }
 .arcade { width: 100%; max-width: 1920px; margin: 0 auto; }
 .scene { position: relative; width: 100%; aspect-ratio: 3 / 2; overflow: hidden; isolation: isolate; }
 .scene-art { display: block; width: 100%; height: 100%; object-fit: contain; }
-.floor-shadows { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 14% 1.6% at 35.5% 78.6%, rgba(13,20,29,.6), transparent 95%), radial-gradient(ellipse 14.6% 1.8% at 66% 74.5%, rgba(13,20,29,.48), transparent 95%), radial-gradient(ellipse 8% 1.4% at 90% 63.6%, rgba(13,20,29,.28), transparent 95%), radial-gradient(ellipse 15% 7% at 35.5% 79%, rgba(255,169,45,.12), transparent 90%); }
-.room-labels { position: absolute; top: 1.6%; left: 6.25%; right: 6.25%; display: flex; justify-content: space-between; color: #e3dfcf; font-size: clamp(6px, 1.3vw, 25px); letter-spacing: .03em; text-shadow: 0 1px 2px rgba(17,26,35,.65); pointer-events: none; }
 .scene-animation { position: absolute; inset: 0; display: block; width: 100%; height: 100%; pointer-events: none; image-rendering: pixelated; }
 .family-photo { position: absolute; left: 16.471354%; top: 13.183594%; width: 9.635417%; height: 9.472656%; padding: .195313%; overflow: hidden; background: #694834; border: 0; box-shadow: inset 0 2px 0 #a27a54, inset 2px 0 0 #926c4d, inset 0 -2px 0 #39291f, 2px 3px 0 rgba(23, 27, 33, .4); }
 .family-photo img { display: block; width: 100%; height: 100%; padding: 2.112676%; object-fit: contain; image-rendering: pixelated; background: #bbac8c; filter: saturate(.76) brightness(.82) sepia(.12); }
