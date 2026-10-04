@@ -1,20 +1,179 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#f9f4e8">
-    <meta name="description" content="Isaac Cheung. Coming soon.">
-    <title>Isaac Cheung · Coming soon</title>
-    <link rel="icon" href="favicon.svg" type="image/svg+xml">
-    <link rel="preload" href="fredoka.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="styles.css">
-  </head>
-  <body>
-    <main aria-labelledby="name">
-      <img class="mascot" src="favicon.svg" width="112" height="112" alt="">
-      <h1 id="name">Isaac Cheung</h1>
-      <p>Coming soon</p>
-    </main>
-  </body>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111c38">
+<title>Curtis Cheung · Arcade preview</title>
+<meta name="description" content="A temporary preview of Curtis Cheung’s pixel arcade, featuring Vincent and Calvin.">
+<meta name="robots" content="noindex, nofollow">
+<style>html,body{margin:0;background:#111c38}button,a{touch-action:manipulation}</style>
+</head>
+<body>
+<div id="curtis-arcade-motion" data-motion="playing" aria-label="Curtis Cheung pixel arcade mockup">
+  <style>
+    #curtis-arcade-motion {
+      --arcade-paper: #fff1d2;
+      --arcade-night: #111c38;
+      --arcade-line: #485575;
+      --arcade-mint: #61efd7;
+      --arcade-ink: #0c2530;
+      --arcade-amber: #ffd78a;
+      width: 100%;
+      max-width: 1536px;
+      margin: 0 auto;
+      color: var(--arcade-paper);
+      font-family: Consolas, "Courier New", monospace;
+      background: var(--arcade-night);
+    }
+    #curtis-arcade-motion * { box-sizing: border-box; }
+    #curtis-arcade-motion .arcade-scene { position: relative; width: 100%; overflow: hidden; }
+    #curtis-arcade-motion .arcade-art { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; }
+    #curtis-arcade-motion .scene-link {
+      position: absolute; z-index: 1; display: block; border-radius: 3px;
+      text-decoration: none; background: transparent;
+    }
+    #curtis-arcade-motion .scene-link-vincent { left: 25.59%; top: 80.76%; width: 20.31%; height: 6.15%; }
+    #curtis-arcade-motion .scene-link-calvin { left: 57.81%; top: 81.05%; width: 17.25%; height: 5.47%; }
+    #curtis-arcade-motion .scene-link:hover { background: rgba(255, 241, 210, .08); }
+    #curtis-arcade-motion a:focus-visible, #curtis-arcade-motion button:focus-visible {
+      outline: 3px solid var(--arcade-paper); outline-offset: 4px;
+    }
+    #curtis-arcade-motion .arcade-motion { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; }
+    #curtis-arcade-motion .tail-sway { transform-box: fill-box; transform-origin: right bottom; animation: cam-tail 7.2s ease-in-out infinite; }
+    #curtis-arcade-motion .steam { animation: cam-steam 5.8s linear infinite; opacity: 0; }
+    #curtis-arcade-motion .steam-b { animation-delay: -2s; animation-duration: 6.1s; }
+    #curtis-arcade-motion .steam-c { animation-delay: -4s; animation-duration: 6.8s; }
+    #curtis-arcade-motion .lamp { animation: cam-lamp 7.1s ease-in-out infinite; }
+    #curtis-arcade-motion .lamp-right { animation-delay: -3.4s; animation-duration: 8.9s; }
+    #curtis-arcade-motion .bridge-light { animation: cam-twinkle 6.4s steps(3, end) infinite; }
+    #curtis-arcade-motion .bridge-light:nth-child(3n) { animation-delay: -4.1s; animation-duration: 9.1s; }
+    #curtis-arcade-motion .bridge-light:nth-child(3n + 1) { animation-delay: -2.6s; animation-duration: 7.8s; }
+    #curtis-arcade-motion .bridge-light:nth-child(4n) { animation-delay: -1.2s; animation-duration: 5.7s; }
+    #curtis-arcade-motion .bumper { animation: cam-bumper 4.7s steps(2, end) infinite; }
+    #curtis-arcade-motion .bumper:nth-child(2) { animation-delay: -1.1s; animation-duration: 5.6s; }
+    #curtis-arcade-motion .bumper:nth-child(3) { animation-delay: -3.2s; animation-duration: 6.3s; }
+    #curtis-arcade-motion .bumper:nth-child(4) { animation-delay: -4.4s; animation-duration: 7.4s; }
+    #curtis-arcade-motion .button-light { animation: cam-button 3.8s steps(2, end) infinite; }
+    #curtis-arcade-motion .button-light:nth-child(2) { animation-delay: -1.9s; }
+    #curtis-arcade-motion[data-motion="paused"] .ambient { animation-play-state: paused; }
+    #curtis-arcade-motion .arcade-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; padding: 14px; }
+    #curtis-arcade-motion .arcade-link, #curtis-arcade-motion .motion-toggle {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 44px; padding: 10px 16px; border: 1px solid var(--arcade-line);
+      border-radius: 3px; background: var(--arcade-night); color: var(--arcade-paper);
+      font: inherit; text-decoration: none; white-space: nowrap;
+    }
+    #curtis-arcade-motion .arcade-link-vincent { background: var(--arcade-mint); color: var(--arcade-ink); border-color: var(--arcade-mint); }
+    #curtis-arcade-motion .arcade-link-calvin { border-color: var(--arcade-amber); color: var(--arcade-amber); }
+    #curtis-arcade-motion .motion-toggle { margin-left: auto; }
+    #curtis-arcade-motion .arcade-link:hover, #curtis-arcade-motion .motion-toggle:hover { filter: brightness(1.12); }
+    #curtis-arcade-motion .scene-description { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    @keyframes cam-tail { 0%, 22%, 58%, 100% { transform: rotate(0deg); } 34% { transform: rotate(16deg); } 45% { transform: rotate(-10deg); } 74% { transform: rotate(12deg); } 85% { transform: rotate(-4deg); } }
+    @keyframes cam-steam { 0% { opacity: 0; transform: translate(0, 5px); } 16% { opacity: .4; } 48% { opacity: .28; } 80% { opacity: .09; } 100% { opacity: 0; transform: translate(7px, -25px); } }
+    @keyframes cam-lamp { 0%, 100% { opacity: .34; } 38% { opacity: .49; } 70% { opacity: .38; } }
+    @keyframes cam-twinkle { 0%, 15%, 45%, 100% { opacity: .25; } 23%, 34% { opacity: .78; } 60%, 72% { opacity: .5; } }
+    @keyframes cam-bumper { 0%, 62%, 100% { opacity: .15; } 68%, 80% { opacity: .58; } 86% { opacity: .25; } }
+    @keyframes cam-button { 0%, 48%, 100% { opacity: .2; } 56%, 85% { opacity: .64; } }
+    @media (max-width: 540px) {
+      #curtis-arcade-motion .arcade-controls { gap: 8px; padding: 12px; }
+      #curtis-arcade-motion .arcade-link { flex: 1 1 130px; }
+      #curtis-arcade-motion .motion-toggle { margin: 0; width: 100%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #curtis-arcade-motion:not([data-user-motion="enabled"]) .ambient { animation: none; }
+      #curtis-arcade-motion:not([data-user-motion="enabled"]) .steam { opacity: .12; }
+    }
+  </style>
+  <div class="arcade-scene" aria-describedby="cam-description">
+    <img class="arcade-art" src="arcade.webp" width="1536" height="1024" alt="A cozy pixel arcade: Vincent's lit Pokémon, Bluey and planets pinball machine beside Calvin's boxed machine, Golden Gate Bridge through the window, Numbered world and Sudo portrait posters, a sleeping white and orange cat, a hobby desk with coffee and one Gundam model, and a mixed comic collection.">
+    <svg class="arcade-motion" viewBox="0 0 1536 1024" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <radialGradient id="cam-lamp-glow"><stop offset="0" stop-color="#ffe7a1" stop-opacity=".62"/><stop offset=".26" stop-color="#ffc66c" stop-opacity=".22"/><stop offset="1" stop-color="#ffc66c" stop-opacity="0"/></radialGradient>
+        <radialGradient id="cam-bumper-glow"><stop offset="0" stop-color="#fff1a3" stop-opacity=".7"/><stop offset=".27" stop-color="#ffd563" stop-opacity=".42"/><stop offset="1" stop-color="#ffb12c" stop-opacity="0"/></radialGradient>
+      </defs>
+      <g id="cam-bridge-lights" fill="#ffe4a2" shape-rendering="crispEdges"></g>
+      <g id="cam-lamps"><circle class="ambient lamp" cx="42" cy="103" r="62" fill="url(#cam-lamp-glow)"/><circle class="ambient lamp lamp-right" cx="1494" cy="103" r="62" fill="url(#cam-lamp-glow)"/></g>
+      <g id="cam-machine-lights" fill="url(#cam-bumper-glow)"></g>
+      <g id="cam-machine-buttons" fill="#ffe4a2" shape-rendering="crispEdges"></g>
+      <g id="cam-coffee-steam" transform="translate(1350 410)" fill="none" stroke="#ffeacb" stroke-width="3" stroke-linejoin="miter" shape-rendering="crispEdges">
+        <path class="ambient steam" d="M-9 -4H-13V-13H-9V-21H-14V-29H-10V-37"/>
+        <path class="ambient steam steam-b" d="M1 -3H5V-11H1V-19H6V-27H2V-36"/>
+        <path class="ambient steam steam-c" d="M11 -3H14V-12H10V-20H15V-28H11V-34"/>
+      </g>
+      <g id="cam-cat-tail" transform="translate(36 507)" shape-rendering="crispEdges">
+        <g class="ambient tail-sway">
+          <path fill="#6f432b" d="M2 1H-13V-2H-23V-5H-29V-10H-33V-17H-29V-14H-24V-9H-18V-6H-7V-3H2Z"/>
+          <path fill="#edc9a4" d="M1 -1H-13V-4H-23V-7H-27V-10H-29V-14H-26V-11H-21V-7H-16V-4H-5V-2H1Z"/>
+          <path fill="#fff2dc" d="M0 -2H-12V-5H-20V-8H-15V-6H-5V-3H0Z"/>
+          <path fill="#ce803a" d="M-20 -7H-24V-10H-29V-15H-26V-12H-22V-9H-20Z"/>
+        </g>
+      </g>
+    </svg>
+    <a class="scene-link scene-link-vincent" href="https://thevincentcheung.com" target="_blank" rel="noopener noreferrer" aria-label="Visit Vincent's website"><span class="scene-description">Visit Vincent ↗</span></a>
+    <a class="scene-link scene-link-calvin" href="https://thecalvincheung.com" target="_blank" rel="noopener noreferrer" aria-label="Visit Calvin's website"><span class="scene-description">Visit Calvin ↗</span></a>
+    <p id="cam-description" class="scene-description">Player 01 Vincent: high score 09 20 20. Player 02 Calvin: due February 08, 2027. The cat's tail sways, coffee steam rises, and the lamps, bridge and pinball lights gently glow.</p>
+  </div>
+  <div class="arcade-controls">
+    <a class="arcade-link arcade-link-vincent cursor-interaction" href="https://thevincentcheung.com" target="_blank" rel="noopener noreferrer" aria-label="Visit Vincent's website">Visit Vincent ↗</a>
+    <a class="arcade-link arcade-link-calvin cursor-interaction" href="https://thecalvincheung.com" target="_blank" rel="noopener noreferrer" aria-label="Visit Calvin's website">Visit Calvin ↗</a>
+    <button class="motion-toggle cursor-interaction" type="button" aria-pressed="true" aria-label="Pause ambient animation">Pause motion</button>
+  </div>
+  <script>
+    (() => {
+      const root = document.getElementById('curtis-arcade-motion');
+      if (!root) return;
+      const button = root.querySelector('.motion-toggle');
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const SVG_NS = 'http://www.w3.org/2000/svg';
+      // Coordinates are in source-image pixels; edit this object to retune the generated art.
+      const anchors = {
+        catTail: [58, 509],
+        coffee: [1421, 410],
+        lamps: [[42, 103], [1494, 103]],
+        bridgeLights: [[14, 252], [33, 256], [54, 260], [75, 263], [104, 264], [130, 264], [153, 265], [182, 267], [211, 270], [30, 301], [71, 310], [112, 307], [151, 310], [194, 304]],
+        bumpers: [[459, 472, 23], [558, 451, 21], [671, 453, 19], [550, 521, 16]],
+        buttons: [[514, 602], [587, 602]]
+      };
+      root.querySelector('#cam-cat-tail').setAttribute('transform', `translate(${anchors.catTail.join(' ')})`);
+      root.querySelector('#cam-coffee-steam').setAttribute('transform', `translate(${anchors.coffee.join(' ')})`);
+      root.querySelectorAll('#cam-lamps circle').forEach((lamp, index) => {
+        lamp.setAttribute('cx', anchors.lamps[index][0]);
+        lamp.setAttribute('cy', anchors.lamps[index][1]);
+      });
+      function appendShape(parent, tag, attrs) {
+        const shape = document.createElementNS(SVG_NS, tag);
+        Object.entries(attrs).forEach(([name, value]) => shape.setAttribute(name, value));
+        parent.appendChild(shape);
+      }
+      const bridge = root.querySelector('#cam-bridge-lights');
+      anchors.bridgeLights.forEach(([x, y]) => appendShape(bridge, 'rect', { x, y, width: 3, height: 3, class: 'ambient bridge-light' }));
+      const machine = root.querySelector('#cam-machine-lights');
+      anchors.bumpers.forEach(([cx, cy, r]) => appendShape(machine, 'circle', { cx, cy, r, class: 'ambient bumper' }));
+      const coinButtons = root.querySelector('#cam-machine-buttons');
+      anchors.buttons.forEach(([x, y]) => appendShape(coinButtons, 'rect', { x: x - 2, y: y - 9, width: 4, height: 18, class: 'ambient button-light' }));
+
+      let manualChoice = false;
+      let playing = !reduced.matches;
+      function render() {
+        root.dataset.motion = playing ? 'playing' : 'paused';
+        root.dataset.userMotion = playing && manualChoice ? 'enabled' : 'default';
+        button.textContent = playing ? 'Pause motion' : 'Play motion';
+        button.setAttribute('aria-pressed', String(playing));
+        button.setAttribute('aria-label', playing ? 'Pause ambient animation' : 'Play ambient animation');
+      }
+      button.addEventListener('click', () => {
+        manualChoice = true;
+        playing = !playing;
+        render();
+      });
+      reduced.addEventListener('change', () => {
+        if (!manualChoice) { playing = !reduced.matches; render(); }
+      });
+      render();
+    })();
+  </script>
+</div>
+
+</body>
 </html>
